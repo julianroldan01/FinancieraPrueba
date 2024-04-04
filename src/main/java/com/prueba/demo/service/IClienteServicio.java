@@ -13,4 +13,6 @@ public interface IClienteServicio {
     public ResponseEntity<String> guardarCliente(Cliente cliente);
     public void eliminarClientePorId(Integer idCliente);
     List<Object[]> obtenerInformacionCuentaCliente();
+
+    Cliente actualizarCliente(int id, Cliente clienteRecibido);
 }

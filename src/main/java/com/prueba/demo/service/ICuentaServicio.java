@@ -12,4 +12,5 @@ public interface ICuentaServicio {
 
     public void eliminarCuentaPorId(Integer idCuenta);
 
+    Cuenta actualizarCuenta(int id, Cuenta cuentaRecibido);
 }

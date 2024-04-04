@@ -20,52 +20,46 @@ import java.util.Map;
 public class CuentaControlador {
     private static final Logger logger =
             LoggerFactory.getLogger(CuentaControlador.class);
-@Autowired
+    @Autowired
     private CuentaServicio cuentaServicio;
+
     //http://locahost:8080/financiera/cuentas
     @GetMapping("/cuentas")
-    public List<Cuenta> obtenerCuentas(){
+    public List<Cuenta> obtenerCuentas() {
         List<Cuenta> cuentas = this.cuentaServicio.listarCuentas();
         logger.info("Cuentas obtenidas: ");
         cuentas.forEach((cuenta -> logger.info(cuenta.toString())));
         return cuentas;
     }
-    @PostMapping ("/cuentas")
-    public Cuenta agregarCuenta(@RequestBody Cuenta cuenta){
+
+    @PostMapping("/cuentas")
+    public Cuenta agregarCuenta(@RequestBody Cuenta cuenta) {
         logger.info("Cuenta a agregar: " + cuenta);
         return this.cuentaServicio.guardarCuenta(cuenta);
     }
+
     @GetMapping("/cuentas/{id}")
     public ResponseEntity<Cuenta> obtenerCuentaPorId(
-            @PathVariable int id){
+            @PathVariable int id) {
         Cuenta cuenta = this.cuentaServicio.buscarCuentaPorId(id);
-        if(cuenta != null)
+        if (cuenta != null)
             return ResponseEntity.ok(cuenta);
         else
             throw new RecursoNoEncontradoExcepcion("No se encontro por el id: " + id);
     }
+
     @PutMapping("/cuentas/{id}")
     public ResponseEntity<Cuenta> actualizarCuenta(
             @PathVariable int id,
-            @RequestBody Cuenta cuentaRecibido){
-        Cuenta cuenta = this.cuentaServicio.buscarCuentaPorId(id);
-        if(cuenta == null)
-            throw new RecursoNoEncontradoExcepcion("No se encontro el id: " + id);
-        cuenta.setTipoCuenta(cuentaRecibido.getTipoCuenta());
-        cuenta.setNumeroCuenta(cuentaRecibido.getNumeroCuenta());
-        cuenta.setEstado(cuentaRecibido.getEstado());
-        cuenta.setSaldo(cuentaRecibido.getSaldo());
-        cuenta.setExentaGMF(cuentaRecibido.getExentaGMF());
-        cuenta.setFechaCreacion(cuentaRecibido.getFechaCreacion());
-        cuenta.setFechaModificacion(cuentaRecibido.getFechaModificacion());
-        cuenta.setNombre(cuentaRecibido.getNombre());
-        this.cuentaServicio.guardarCuenta(cuenta);
-        return ResponseEntity.ok(cuenta);
+            @RequestBody Cuenta cuentaRecibido) {
+        Cuenta cuentaActualizada = cuentaServicio.actualizarCuenta(id, cuentaRecibido);
+        return ResponseEntity.ok(cuentaActualizada);
     }
+
     @DeleteMapping("/cuentas/{id}")
-    public ResponseEntity<Map<String, Boolean>> eliminarCuenta(@PathVariable int id){
+    public ResponseEntity<Map<String, Boolean>> eliminarCuenta(@PathVariable int id) {
         Cuenta cuenta = cuentaServicio.buscarCuentaPorId(id);
-        if(cuenta == null)
+        if (cuenta == null)
             throw new RecursoNoEncontradoExcepcion("No se encontro el id: " + id);
         this.cuentaServicio.eliminarCuentaPorId(Math.toIntExact(cuenta.getIdCuenta()));
         Map<String, Boolean> respuesta = new HashMap<>();

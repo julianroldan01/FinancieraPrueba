@@ -11,44 +11,48 @@ import java.util.Date;
 @Data
 @Table(name = "cuenta")
 public class Cuenta implements Serializable {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name="idCuenta")
-private Long idCuenta;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCuenta")
+    private Long idCuenta;
 
-@Column(name = "tipoCuenta")
-private String tipoCuenta;
+    @Column(name = "tipoCuenta")
+    private String tipoCuenta;
 
-@Column(name = "numeroCuenta")
-private Long numeroCuenta;
+    @Column(name = "numeroCuenta")
+    private Long numeroCuenta;
 
-@Column(name = "estado")
-private String estado;
+    @Column(name = "estado")
+    private String estado;
 
-@Column(name = "saldo")
-private Long saldo;
+    @Column(name = "saldo")
+    private Long saldo;
 
-@Column(name = "exentaGMF")
-private String exentaGMF;
+    @Column(name = "exentaGMF")
+    private String exentaGMF;
 
-@Column(name = "fechaCreacion")
-@JsonFormat(pattern = "yyyy-MM-dd")
-private Date fechaCreacion;
+    @Column(name = "fechaCreacion")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date fechaCreacion;
+
     @PrePersist
     protected void onCreate() {
         this.fechaCreacion = new Date();
     }
-@Column(name = "fechaModificacion")
-@JsonFormat(pattern = "yyyy-MM-dd")
-private Date fechaModificacion;
+
+    @Column(name = "fechaModificacion")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date fechaModificacion;
+
     @PreUpdate
     protected void onUpdate() {
         this.fechaModificacion = new Date();
     }
-@Column(name = "usuario")
-private String nombre;
 
-    @ManyToOne
+    @Column(name = "usuario")
+    private String nombre;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
 }

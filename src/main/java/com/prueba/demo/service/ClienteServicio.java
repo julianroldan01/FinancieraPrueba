@@ -1,6 +1,5 @@
 package com.prueba.demo.service;
 
-import com.prueba.demo.ecxepcion.RecursoBadRequest;
 import com.prueba.demo.ecxepcion.RecursoNoEncontradoExcepcion;
 import com.prueba.demo.entities.Cliente;
 import com.prueba.demo.entities.Cuenta;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 @Service
 public class ClienteServicio implements IClienteServicio{
@@ -65,4 +65,19 @@ public class ClienteServicio implements IClienteServicio{
     public List<Object[]> obtenerInformacionCuentaCliente() {
         return clienteRepositorio.obtenerInformacionCuentaCliente();
     }
+@Override
+public Cliente actualizarCliente(int id, Cliente clienteActualizado) {
+    Cliente clienteExistente = clienteRepositorio.findById((long) id)
+            .orElseThrow(() -> new RecursoNoEncontradoExcepcion("No se encontró el cliente con ID: " + id));
+
+    clienteExistente.setTipoIdentificacion(clienteActualizado.getTipoIdentificacion());
+    clienteExistente.setNumeroIdentificacion(clienteActualizado.getNumeroIdentificacion());
+    clienteExistente.setNombre(clienteActualizado.getNombre());
+    clienteExistente.setApellido(clienteActualizado.getApellido());
+    clienteExistente.setCorreo(clienteActualizado.getCorreo());
+    clienteExistente.setFechaNacimiento(clienteActualizado.getFechaNacimiento());
+    clienteExistente.setFechaModificacion(new Date()); // Actualizar fecha de modificación
+
+    return clienteRepositorio.save(clienteExistente);
+}
 }
