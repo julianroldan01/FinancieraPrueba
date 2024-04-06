@@ -1,7 +1,8 @@
-package com.prueba.demo.service;
+package com.prueba.demo.service.impl;
 
 import com.prueba.demo.entities.Cuenta;
 import com.prueba.demo.entities.Transaccion;
+import com.prueba.demo.service.ITransaccionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.prueba.demo.repository.TransaccionRepositorio;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
-public class TransaccionServicio implements ITransaccionServicio{
+public class TransaccionServicioImpl implements ITransaccionServicio {
     @Autowired
     private TransaccionRepositorio transaccionRepository;
     @Override

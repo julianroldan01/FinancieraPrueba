@@ -1,6 +1,8 @@
 package com.prueba.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -49,10 +51,9 @@ public class Cuenta implements Serializable {
         this.fechaModificacion = new Date();
     }
 
-    @Column(name = "usuario")
-    private String nombre;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "idCliente")
+    @JsonBackReference
+    @JsonIgnoreProperties("cuentas")
     private Cliente cliente;
 }

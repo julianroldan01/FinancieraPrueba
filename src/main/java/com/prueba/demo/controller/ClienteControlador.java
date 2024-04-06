@@ -2,7 +2,7 @@ package com.prueba.demo.controller;
 
 import com.prueba.demo.ecxepcion.RecursoNoEncontradoExcepcion;
 import com.prueba.demo.entities.Cliente;
-import com.prueba.demo.service.ClienteServicio;
+import com.prueba.demo.service.impl.ClienteServicioImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +19,18 @@ import java.util.Map;
 @RequestMapping("/financiera")
 //@CrossOrigin(value = "http://localhost:4200")
 public class ClienteControlador {
-    private static final Logger logger = LoggerFactory.getLogger(ClienteControlador.class);
+
     @Autowired
-    private ClienteServicio clienteServicio;
+    private ClienteServicioImpl clienteServicio;
 
     //http://locahost:8080/financiera/clientes
     @GetMapping("/clientes")
     public List<Cliente> obtenerClientes() {
-        List<Cliente> clientes = this.clienteServicio.listarClientes();
-        clientes.forEach((cliente -> logger.info(cliente.toString())));
-        return clientes;
+        return this.clienteServicio.listarClientes();
     }
 
     @PostMapping("/clientes")
     public ResponseEntity<String> agregarCliente(@RequestBody Cliente cliente) {
-        logger.info("Cliente a agregar: " + cliente);
         return this.clienteServicio.guardarCliente(cliente);
     }
 
@@ -47,25 +44,6 @@ public class ClienteControlador {
             throw new RecursoNoEncontradoExcepcion("No se encontro el id: " + id);
 
     }
-
-    //    @PutMapping("/clientes/{id}")
-//    public ResponseEntity<Cliente> actualizarCliente(
-//            @PathVariable int id,
-//            @RequestBody Cliente clienteRecibido){
-//        Cliente cliente = this.clienteServicio.buscarClientePorId(id);
-//        if(cliente == null)
-//            throw new RecursoNoEncontradoExcepcion("No se encontro el id: " + id);
-//        cliente.setTipoIdentificacion(clienteRecibido.getTipoIdentificacion());
-//        cliente.setNumeroIdentificacion(clienteRecibido.getNumeroIdentificacion());
-//        cliente.setNombre(clienteRecibido.getNombre());
-//        cliente.setApellido(clienteRecibido.getApellido());
-//        cliente.setCorreo(clienteRecibido.getCorreo());
-//        cliente.setFechaNacimiento(clienteRecibido.getFechaNacimiento());
-//        cliente.setFechaCreacion(clienteRecibido.getFechaCreacion());
-//        cliente.setFechaModificacion(clienteRecibido.getFechaModificacion());
-//        this.clienteServicio.guardarCliente(cliente);
-//        return ResponseEntity.ok(cliente);
-//    }
     @PutMapping("/clientes/{id}")
     public ResponseEntity<Cliente> actualizarCliente(
             @PathVariable int id,
@@ -90,4 +68,5 @@ public class ClienteControlador {
         List<Object[]> informacionCuentaCliente = clienteServicio.obtenerInformacionCuentaCliente();
         return ResponseEntity.ok(informacionCuentaCliente);
     }
+
 }

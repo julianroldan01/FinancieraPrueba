@@ -1,13 +1,14 @@
 package com.prueba.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -55,6 +56,8 @@ public class Cliente implements Serializable {
         this.fechaModificacion = new Date();
     }
 
-    @OneToMany (mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Cuenta> cuentas = new HashSet<>();
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnoreProperties("cliente")
+    @JsonManagedReference
+    protected List<Cuenta> cuentas = new ArrayList<>();
 }

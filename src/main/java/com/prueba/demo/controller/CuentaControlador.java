@@ -2,10 +2,11 @@ package com.prueba.demo.controller;
 
 import com.prueba.demo.ecxepcion.RecursoNoEncontradoExcepcion;
 import com.prueba.demo.entities.Cuenta;
-import com.prueba.demo.service.CuentaServicio;
+import com.prueba.demo.service.impl.CuentaServicioImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +22,20 @@ public class CuentaControlador {
     private static final Logger logger =
             LoggerFactory.getLogger(CuentaControlador.class);
     @Autowired
-    private CuentaServicio cuentaServicio;
+    private CuentaServicioImpl cuentaServicio;
 
     //http://locahost:8080/financiera/cuentas
     @GetMapping("/cuentas")
     public List<Cuenta> obtenerCuentas() {
-        List<Cuenta> cuentas = this.cuentaServicio.listarCuentas();
-        logger.info("Cuentas obtenidas: ");
-        cuentas.forEach((cuenta -> logger.info(cuenta.toString())));
-        return cuentas;
+        return this.cuentaServicio.listarCuentas();
     }
 
     @PostMapping("/cuentas")
-    public Cuenta agregarCuenta(@RequestBody Cuenta cuenta) {
-        logger.info("Cuenta a agregar: " + cuenta);
-        return this.cuentaServicio.guardarCuenta(cuenta);
+    public ResponseEntity<Cuenta> agregarCuenta(@RequestBody Cuenta cuenta) {
+        Cuenta cuentaGuardada = this.cuentaServicio.guardarCuenta(cuenta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cuentaGuardada);
     }
+
 
     @GetMapping("/cuentas/{id}")
     public ResponseEntity<Cuenta> obtenerCuentaPorId(

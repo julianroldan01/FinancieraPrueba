@@ -2,7 +2,7 @@ package com.prueba.demo.controller;
 
 import com.prueba.demo.entities.Cuenta;
 import com.prueba.demo.entities.Transaccion;
-import com.prueba.demo.service.TransaccionServicio;
+import com.prueba.demo.service.impl.TransaccionServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 public class TransaccionControlador {
 @Autowired
-    private TransaccionServicio transaccionServicio;
+    private TransaccionServicioImpl transaccionServicio;
     @PutMapping("/consignacion/{idCuenta}")
     public ResponseEntity<Transaccion> realizarConsignacion(
             @PathVariable Cuenta idCuenta,

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CuentaRepositorio extends JpaRepository<Cuenta, Long> {
-    boolean existsByNumeroCuenta(Integer numeroCuenta);
+    boolean existsByNumeroCuenta(Long numeroCuenta);
 
     List<Cuenta> findByCliente(Cliente cliente);
 }
