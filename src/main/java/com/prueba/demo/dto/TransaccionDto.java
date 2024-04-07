@@ -14,7 +14,7 @@ import java.util.Date;
 public class TransaccionDto {
     private Long id;
     private String tipo;
-    private BigDecimal monto;
+    private Long monto;
     private Date fecha;
     private Cuenta cuentaOrigen;
     private Cuenta cuentaDestino;

@@ -1,5 +1,6 @@
 package com.prueba.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,18 +22,20 @@ public class Transaccion implements Serializable {
     private String tipo; // Puede ser "Consignacion", "Retiro" o "Transferencia"
 
     @Column(name = "monto")
-    private BigDecimal monto;
+    private Long monto;
 
     @Column(name = "fecha")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fecha;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "cuenta_origen_id")
+    @JsonBackReference
     private Cuenta cuentaOrigen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "cuenta_destino_id")
+    @JsonBackReference
     private Cuenta cuentaDestino;
 
 }

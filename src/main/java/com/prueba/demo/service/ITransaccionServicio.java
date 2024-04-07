@@ -6,9 +6,9 @@ import com.prueba.demo.entities.Transaccion;
 import java.math.BigDecimal;
 
 public interface ITransaccionServicio {
-    Transaccion realizarConsignacion(Cuenta cuenta, BigDecimal monto);
+    Transaccion realizarConsignacion(Cuenta cuenta, Long monto);
 
-    Transaccion realizarRetiro(Transaccion transaccion);
+    Transaccion realizarRetiro(Cuenta cuenta, Long monto);
 
-    Transaccion realizarTransferencia(Transaccion transaccion);
+    Transaccion realizarTransferencia(Cuenta cuentaOrigen, Cuenta cuentaDestino, Long monto);
 }
