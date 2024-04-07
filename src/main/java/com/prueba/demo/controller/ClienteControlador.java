@@ -2,9 +2,7 @@ package com.prueba.demo.controller;
 
 import com.prueba.demo.ecxepcion.RecursoNoEncontradoExcepcion;
 import com.prueba.demo.entities.Cliente;
-import com.prueba.demo.service.impl.ClienteServicioImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.prueba.demo.service.ClienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ import java.util.Map;
 public class ClienteControlador {
 
     @Autowired
-    private ClienteServicioImpl clienteServicio;
+    private ClienteServicio clienteServicio;
 
     //http://locahost:8080/financiera/clientes
     @GetMapping("/clientes")

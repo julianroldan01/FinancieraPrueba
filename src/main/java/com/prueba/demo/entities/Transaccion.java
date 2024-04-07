@@ -8,6 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -26,7 +27,11 @@ public class Transaccion implements Serializable {
 
     @Column(name = "fecha")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fecha;
+    private Date fecha;
+    @PrePersist
+    protected void onCreate() {
+        this.fecha = new Date();
+    }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "cuenta_origen_id")

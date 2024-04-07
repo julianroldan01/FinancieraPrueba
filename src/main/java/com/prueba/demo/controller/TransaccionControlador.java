@@ -1,27 +1,25 @@
 package com.prueba.demo.controller;
 
+import com.prueba.demo.dto.CuentaDto;
+import com.prueba.demo.dto.TransaccionDto;
 import com.prueba.demo.entities.Cuenta;
 import com.prueba.demo.entities.Transaccion;
 import com.prueba.demo.repository.CuentaRepositorio;
-import com.prueba.demo.service.impl.TransaccionServicioImpl;
+import com.prueba.demo.service.TransaccionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 @RestController
 @RequestMapping("/financiera")
 public class TransaccionControlador {
 @Autowired
-    private TransaccionServicioImpl transaccionServicio;
+    private TransaccionServicio transaccionServicio;
 @Autowired
 private CuentaRepositorio cuentaRepositorio;
-    @PostMapping("/consignacion")
-    public ResponseEntity<String> realizarConsignacion(@RequestParam Long idCuenta, @RequestParam Long monto) {
+    @PostMapping("/consignacion/{idCuenta}")
+    public ResponseEntity<String> realizarConsignacion(@RequestBody Transaccion transaccion, @PathVariable Long idCuenta) {
         try {
-            Cuenta cuenta = cuentaRepositorio.findById(idCuenta)
-                    .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
-            Transaccion transaccion = transaccionServicio.realizarConsignacion(cuenta, monto);
+            Transaccion transaccionGuardada = transaccionServicio.realizarConsignacion(transaccion, idCuenta);
             return ResponseEntity.ok("Consignación realizada correctamente. ID de transacción: " + transaccion.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

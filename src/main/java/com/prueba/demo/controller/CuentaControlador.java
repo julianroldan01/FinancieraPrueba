@@ -2,7 +2,7 @@ package com.prueba.demo.controller;
 
 import com.prueba.demo.ecxepcion.RecursoNoEncontradoExcepcion;
 import com.prueba.demo.entities.Cuenta;
-import com.prueba.demo.service.impl.CuentaServicioImpl;
+import com.prueba.demo.service.CuentaServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CuentaControlador {
     private static final Logger logger =
             LoggerFactory.getLogger(CuentaControlador.class);
     @Autowired
-    private CuentaServicioImpl cuentaServicio;
+    private CuentaServicio cuentaServicio;
 
     //http://locahost:8080/financiera/cuentas
     @GetMapping("/cuentas")
@@ -38,8 +38,7 @@ public class CuentaControlador {
 
 
     @GetMapping("/cuentas/{id}")
-    public ResponseEntity<Cuenta> obtenerCuentaPorId(
-            @PathVariable int id) {
+    public ResponseEntity<Cuenta> obtenerCuentaPorId(@PathVariable int id) {
         Cuenta cuenta = this.cuentaServicio.buscarCuentaPorId(id);
         if (cuenta != null)
             return ResponseEntity.ok(cuenta);
