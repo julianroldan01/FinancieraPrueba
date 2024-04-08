@@ -1,6 +1,5 @@
 package com.prueba.demo.service.impl;
 
-import com.prueba.demo.dto.TransaccionDto;
 import com.prueba.demo.entities.Cuenta;
 import com.prueba.demo.entities.Transaccion;
 import com.prueba.demo.repository.CuentaRepositorio;
@@ -9,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.prueba.demo.repository.TransaccionRepositorio;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class TransaccionServicioImpl implements TransaccionServicio {
@@ -19,26 +16,22 @@ public class TransaccionServicioImpl implements TransaccionServicio {
     private TransaccionRepositorio transaccionRepository;
     @Autowired
     private CuentaRepositorio cuentaRepositorio;
+
     @Override
-    public Transaccion realizarConsignacion(Transaccion transaccion, Long idCuenta) {
+    public Transaccion realizarConsignacion(Cuenta cuenta, Long monto) {
         // Lógica para realizar una consignación y actualizar el saldo de la cuenta
         // Verifica que la cuenta y el monto sean válidos
-        if (transaccion.getMonto() <= 0) {
-            throw new IllegalArgumentException(" el monto no es válidos para la consignación.");
+        if (cuenta == null || monto <= 0) {
+            throw new IllegalArgumentException("La cuenta o el monto no son válidos para la consignación.");
         }
-        // Obtener la cuenta a partir del ID
-        Cuenta cuenta = cuentaRepositorio.findById(idCuenta)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
-
         // Crea una nueva transacción de tipo "Consignación"
-        Transaccion transaccionnuevo = new Transaccion();
-        transaccionnuevo.setTipo("Consignación");
-        transaccionnuevo.setMonto(transaccion.getMonto());
-
-        transaccionnuevo.setCuentaOrigen(cuenta);
-        transaccionnuevo.setCuentaDestino(cuenta);
+        Transaccion transaccion = new Transaccion();
+        transaccion.setTipo("Consignación");
+        transaccion.setMonto(monto);;
+        transaccion.setCuentaOrigen(cuenta);
+        transaccion.setCuentaDestino(cuenta);
         // Actualiza el saldo de la cuenta
-        Long nuevoSaldo = cuenta.getSaldo() + transaccionnuevo.getMonto();
+        Long nuevoSaldo = cuenta.getSaldo() + monto;
         cuenta.setSaldo(nuevoSaldo);
         cuentaRepositorio.save(cuenta);
         // Guarda la transacción y actualiza la cuenta en la base de datos
@@ -102,5 +95,9 @@ public class TransaccionServicioImpl implements TransaccionServicio {
 
         // Retorna la transacción creada
         return transaccion;
+    }
+    @Override
+    public List<Object[]> movimiento() {
+        return transaccionRepository.movimientos();
     }
 }

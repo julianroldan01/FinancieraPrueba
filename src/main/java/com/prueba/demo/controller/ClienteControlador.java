@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 //http://locahost:8080/financiera
-@RequestMapping("/financiera")
+@RequestMapping(path = "/financiera", produces="application/json")
 //@CrossOrigin(value = "http://localhost:4200")
 public class ClienteControlador {
 
@@ -60,11 +60,4 @@ public class ClienteControlador {
         respuesta.put("eliminado", Boolean.TRUE);
         return ResponseEntity.ok(respuesta);
     }
-
-    @GetMapping("/infCuentaCliente")
-    public ResponseEntity<List<Object[]>> obtenerInformacionCuentaCliente() {
-        List<Object[]> informacionCuentaCliente = clienteServicio.obtenerInformacionCuentaCliente();
-        return ResponseEntity.ok(informacionCuentaCliente);
-    }
-
 }

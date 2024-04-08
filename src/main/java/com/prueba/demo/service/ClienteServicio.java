@@ -12,6 +12,5 @@ public interface ClienteServicio {
      Cliente buscarClientePorId(Integer idCiente);
      ResponseEntity<String> guardarCliente(Cliente cliente);
      void eliminarClientePorId(Integer idCliente);
-     List<Object[]> obtenerInformacionCuentaCliente();
      Cliente actualizarCliente(int id, Cliente clienteRecibido);
 }

@@ -1,7 +1,5 @@
 package com.prueba.demo.controller;
 
-import com.prueba.demo.dto.CuentaDto;
-import com.prueba.demo.dto.TransaccionDto;
 import com.prueba.demo.entities.Cuenta;
 import com.prueba.demo.entities.Transaccion;
 import com.prueba.demo.repository.CuentaRepositorio;
@@ -9,24 +7,29 @@ import com.prueba.demo.service.TransaccionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
-@RequestMapping("/financiera")
+@RequestMapping(path = "/financiera", produces="application/json")
 public class TransaccionControlador {
 @Autowired
     private TransaccionServicio transaccionServicio;
 @Autowired
 private CuentaRepositorio cuentaRepositorio;
-    @PostMapping("/consignacion/{idCuenta}")
-    public ResponseEntity<String> realizarConsignacion(@RequestBody Transaccion transaccion, @PathVariable Long idCuenta) {
+    @PostMapping("/consignacion")
+    public ResponseEntity<String> realizarConsignacion(@RequestParam Long idCuenta, @RequestParam Long monto) {
         try {
-            Transaccion transaccionGuardada = transaccionServicio.realizarConsignacion(transaccion, idCuenta);
+            Cuenta cuenta = cuentaRepositorio.findById(idCuenta)
+                    .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+            Transaccion transaccion = transaccionServicio.realizarConsignacion(cuenta, monto);
             return ResponseEntity.ok("Consignación realizada correctamente. ID de transacción: " + transaccion.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     @PostMapping("/retiro")
-    public ResponseEntity<String> realizarRetiro(@RequestParam Long idCuenta, @RequestParam long monto) {
+    public ResponseEntity<String> realizarRetiro(@RequestParam Long idCuenta, @RequestParam Long monto) {
         try {
             Cuenta cuenta = cuentaRepositorio.findById(idCuenta)
                     .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
@@ -49,5 +52,10 @@ private CuentaRepositorio cuentaRepositorio;
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+    @GetMapping("/movimientos")
+    public ResponseEntity<List<Object[]>> movimientos() {
+        List<Object[]> movimientos = transaccionServicio.movimiento();
+        return ResponseEntity.ok(movimientos);
     }
 }

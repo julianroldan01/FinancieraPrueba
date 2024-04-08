@@ -32,7 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DisabledInAotMode
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class CuentaServicioImplDiffblueTest {
+class CuentaServicioImplTest {
   @Autowired
   private CuentaServicioImpl cuentaServicioImpl;
 
@@ -92,10 +92,6 @@ class CuentaServicioImplDiffblueTest {
     assertEquals(cliente, cuentasObtenidas.getFirst().getCliente());
     // Verificar otros atributos de cuenta2 también
   }
-
-  /**
-   * Method under test: {@link CuentaServicioImpl#guardarCuenta(Cuenta)}
-   */
   @Test
   void testGuardarCuenta() {
     Cliente cliente = new Cliente();
@@ -123,7 +119,7 @@ class CuentaServicioImplDiffblueTest {
     Cuenta actualGuardarCuentaResult = cuentaServicioImpl.guardarCuenta(cuenta);
     Cliente cliente2 = cuenta.getCliente();
     assertInstanceOf(PersistentBag.class, cliente2.getCuentas());
-    assertEquals("Gutierrez Pascuas", cliente2.getApellido());
+    assertEquals("Roldan Dussan", cliente2.getApellido());
     assertEquals(1L, actualGuardarCuentaResult.getCliente().getIdCliente().longValue());
   }
   @Test

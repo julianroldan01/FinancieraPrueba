@@ -20,8 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -30,7 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 @WebMvcTest(ClienteControlador.class)
-@Import(DemoApplication.class)
 class ClienteControladorTest {
     @Autowired
     private MockMvc mockMvc;

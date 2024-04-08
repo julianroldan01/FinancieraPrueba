@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 //http://locahost:8080/financiera
-@RequestMapping("/financiera")
+@RequestMapping(path = "/financiera", produces="application/json")
 //@CrossOrigin(value = "http://localhost:4200")
 public class CuentaControlador {
     private static final Logger logger =

@@ -61,10 +61,6 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         clienteRepositorio.deleteById(Long.valueOf(idCliente));
     }
-    @Override
-    public List<Object[]> obtenerInformacionCuentaCliente() {
-        return clienteRepositorio.obtenerInformacionCuentaCliente();
-    }
 @Override
 public Cliente actualizarCliente(int id, Cliente clienteActualizado) {
     Cliente clienteExistente = clienteRepositorio.findById((long) id)

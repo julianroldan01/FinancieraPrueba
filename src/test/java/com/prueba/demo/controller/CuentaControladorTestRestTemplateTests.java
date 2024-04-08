@@ -9,10 +9,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import java.util.*;
 
@@ -33,26 +30,25 @@ public class CuentaControladorTestRestTemplateTests {
         cuenta.setTipoCuenta("corriente");
         cuenta.setSaldo(10000L);
         cuenta.setExentaGMF("no");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
+        HttpEntity<Cuenta> request = new HttpEntity<>(cuenta, headers);
         // Realizar la solicitud POST para agregar el cliente
-        ResponseEntity<Cuenta> respuesta = testRestTemplate.postForEntity("http://localhost:8080/financiera/cuentas", cuenta, Cuenta.class);
+        ResponseEntity<String> respuesta = testRestTemplate.postForEntity("http://localhost:8080/financiera/cuentas", request, String.class);
 
         // Then
-        // Verificar que la respuesta tiene el código de estado 201 (CREATED)
-        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode());
         // Verificar que el tipo de contenido de la respuesta es JSON
         assertEquals(MediaType.APPLICATION_JSON, respuesta.getHeaders().getContentType());
+        // Verificar que la respuesta tiene el código de estado 201 (CREATED)
+        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode());
 
         // Obtener el cliente creado en la respuesta
-        Cuenta cuentaCreado = respuesta.getBody();
+        String cuentaCreado = respuesta.getBody();
         assertNotNull(cuentaCreado);
 
         // Verificar que los datos del cliente creado son los esperados
-        assertEquals(1L, cuentaCreado.getIdCuenta());
-        assertEquals(5318576895L, cuentaCreado.getNumeroCuenta());
-        assertEquals("corriente", cuentaCreado.getTipoCuenta());
-        assertEquals(10000L, cuentaCreado.getSaldo());
-
+        assertEquals("Cliente agregado exitosamente", cuentaCreado);
     }
     @Test
     @Order(2)

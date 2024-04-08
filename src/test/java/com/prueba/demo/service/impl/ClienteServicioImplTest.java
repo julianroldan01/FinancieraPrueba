@@ -14,7 +14,6 @@ import com.prueba.demo.entities.Cuenta;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
@@ -72,7 +72,6 @@ class ClienteServicioImplTest {
     void testGuardarCliente_EdadValida() {
         // Given
         Cliente cliente = new Cliente();
-        cliente.setIdCliente(1L);
         cliente.setTipoIdentificacion("corriente");
         cliente.setNumeroIdentificacion((int) 5398176548L);
         cliente.setNombre("Julian Antonio");
@@ -89,7 +88,7 @@ class ClienteServicioImplTest {
         ResponseEntity<String> respuesta = clienteServicioImpl.guardarCliente(cliente);
 
         // Then
-        assertThat(respuesta.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(respuesta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(respuesta.getBody()).isEqualTo("Cliente agregado exitosamente");
     }
     @Test
